@@ -28,8 +28,25 @@ def load_trained_model():
         return True
     else:
         print(f"Warning: Model tidak ditemukan di {MODEL_PATH}")
-        print("Silakan train model terlebih dahulu dengan menjalankan: python train.py")
-        return False
+        
+        # Try to download model from cloud storage
+        print("\nMencoba download model dari cloud storage...")
+        try:
+            from download_model import download_model
+            if download_model(MODEL_PATH):
+                print("Mencoba load model yang baru di-download...")
+                model = load_model(MODEL_PATH)
+                print("Model loaded successfully!")
+                return True
+            else:
+                print("Gagal download model dari cloud storage")
+                return False
+        except Exception as e:
+            print(f"Error saat download/load model: {e}")
+            print("\nSilakan setup environment variables di Railway:")
+            print("- MODEL_GDRIVE_ID : Google Drive file ID untuk best_model.h5")
+            print("- atau MODEL_DOWNLOAD_URL : Direct URL untuk download model")
+            return False
 
 
 def preprocess_image(image_data):
