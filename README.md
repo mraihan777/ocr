@@ -192,6 +192,40 @@ Output (A-Z)
 
 **Total Parameters**: ~4.5 million
 
+## ☁️ Deploy ke Railway
+
+Aplikasi ini sudah support deployment ke Railway dengan auto-download model dari cloud storage.
+
+### Quick Deploy Steps:
+
+1. **Upload model ke Google Drive**
+   - Upload `models/best_model.h5` ke Google Drive
+   - Share → "Anyone with the link can view"
+   - Copy File ID dari URL
+
+2. **Setup Railway**
+   - Connect repository ke Railway
+   - Add environment variable:
+     - `MODEL_GDRIVE_ID` = `[your_file_id]`
+
+3. **Deploy!**
+   - Railway akan auto-deploy
+   - Model akan di-download otomatis saat startup
+   - Aplikasi ready dalam ~30-60 detik
+
+**Dokumentasi lengkap**: Lihat `DEPLOYMENT_GUIDE.md`
+
+### Production Checklist:
+
+- ✅ Model uploaded to cloud storage
+- ✅ `MODEL_GDRIVE_ID` set di Railway Variables  
+- ✅ All files committed to git
+- ✅ `runtime.txt` specifies Python version
+- ✅ `Procfile` configured for production server
+- ✅ Health check endpoint available at `/health`
+
+
+
 ## 🔧 Troubleshooting
 
 ### Error: "Model tidak ditemukan"
@@ -211,6 +245,20 @@ Output (A-Z)
 - Pastikan Flask server running (tidak ada error di terminal)
 - Check firewall tidak block port 5000
 - Coba akses `http://127.0.0.1:5000` jika `localhost` tidak work
+
+### Railway: "Model belum di-load"
+**Symptoms**: Deploy berhasil tapi app error "Model belum di-load"
+
+**Solution**:
+1. Check `MODEL_GDRIVE_ID` sudah di-set di Railway Variables
+2. Verify Google Drive link is public
+3. Check Railway logs untuk error message detail
+4. Test manual: `curl https://your-app.railway.app/health`
+
+**Root cause**: Model file tidak ter-upload ke Railway. Model harus diupload ke cloud storage (Google Drive, dll) dan di-download saat startup.
+
+**Dokumentasi lengkap**: Lihat `DEPLOYMENT_GUIDE.md` atau `walkthrough.md`
+
 
 ## 🛠️ Tech Stack
 
