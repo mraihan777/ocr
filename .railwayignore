@@ -1,0 +1,31 @@
+# Dataset (terlalu besar untuk deploy)
+A_Z Handwritten Data.csv
+
+# Pycache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Training scripts (tidak perlu di production)
+train.py
+prepare_data.py
+download_dataset.py
+
+# Data folder (gunakan model yang sudah trained)
+data/
+
+# Training visualizations
+training_history.png
+
+# Local environment
+.env
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/

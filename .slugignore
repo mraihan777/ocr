@@ -1,0 +1,27 @@
+# Dataset (terlalu besar)
+A_Z Handwritten Data.csv
+
+# Training scripts
+train.py
+prepare_data.py
+download_dataset.py
+
+# Data folder
+data/
+
+# Training visualizations
+training_history.png
+
+# Development files
+*.pyc
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+
+# Docs (optional)
+README.md

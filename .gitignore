@@ -1,0 +1,46 @@
+# Dataset (terlalu besar untuk git)
+A_Z Handwritten Data.csv
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Training visualizations (optional - bisa di-commit jika mau)
+# training_history.png
+
+# Local environment variables
+.env
+.env.local
+
+# Data folder - JANGAN EXCLUDE models/
+# Model yang sudah trained HARUS di-commit
+data/
+
+# Logs
+*.log
+logs/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/

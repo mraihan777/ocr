@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handwriting Recognition</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 28V8L16 4L28 8V28H4Z" fill="url(#gradient1)" />
+                        <path d="M10 16H14V22H10V16Z" fill="white" opacity="0.3" />
+                        <path d="M18 16H22V22H18V16Z" fill="white" opacity="0.3" />
+                        <defs>
+                            <linearGradient id="gradient1" x1="4" y1="4" x2="28" y2="28">
+                                <stop stop-color="#667eea" />
+                                <stop offset="1" stop-color="#764ba2" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h1 class="title">Handwriting Recognition</h1>
+                <h1 class="author-title"><span class="author">By Muhammad Raihan</span></h1>
+            </div>
+            <p class="subtitle">Tulis huruf A-Z di canvas dan lihat prediksinya!</p>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Canvas Section -->
+            <div class="card canvas-card">
+                <div class="card-header">
+                    <h2>Gambar Tulisan Tangan</h2>
+                    <p>Gunakan mouse atau touchscreen untuk menulis</p>
+                </div>
+                <div class="canvas-wrapper">
+                    <canvas id="drawingCanvas" width="280" height="280"></canvas>
+                </div>
+
+                <!-- Upload Option -->
+                <div class="upload-option">
+                    <div class="divider">
+                        <span>atau</span>
+                    </div>
+                    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                    <button id="uploadBtn" class="btn btn-upload">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 3V14M10 3L6 7M10 3L14 7" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M3 17H17" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        Upload Gambar
+                    </button>
+                </div>
+
+                <div class="controls">
+                    <button id="clearBtn" class="btn btn-secondary">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M3 3L17 17M3 17L17 3" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                        Clear
+                    </button>
+                    <button id="predictBtn" class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 3L3 17H17L10 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"
+                                fill="none" />
+                            <circle cx="10" cy="13" r="1" fill="currentColor" />
+                        </svg>
+                        Prediksi
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="card results-card">
+                <div class="card-header">
+                    <h2>Hasil Prediksi</h2>
+                    <p>Prediksi akan muncul di sini</p>
+                </div>
+
+                <div id="resultsContent" class="results-content">
+                    <div class="empty-state">
+                        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                            <circle cx="40" cy="40" r="35" stroke="currentColor" stroke-width="2" opacity="0.2" />
+                            <path d="M30 45C30 45 35 50 40 50C45 50 50 45 50 45" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                            <circle cx="32" cy="32" r="2" fill="currentColor" />
+                            <circle cx="48" cy="32" r="2" fill="currentColor" />
+                        </svg>
+                        <p>Belum ada prediksi</p>
+                        <span>Gambar huruf terlebih dahulu</span>
+                    </div>
+                </div>
+
+                <div id="predictionResult" class="prediction-result" style="display: none;">
+                    <div class="main-prediction">
+                        <div class="prediction-label">Huruf Terdeteksi</div>
+                        <div id="predictedLetter" class="predicted-letter">-</div>
+                        <div id="confidence" class="confidence">-</div>
+                    </div>
+
+                    <div class="top-predictions">
+                        <h3>Top 3 Prediksi</h3>
+                        <div id="topPredictions" class="predictions-list">
+                            <!-- Will be filled by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div id="errorMessage" class="error-message" style="display: none;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" />
+                        <path d="M12 8V12M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    <div>
+                        <strong>Error!</strong>
+                        <p id="errorText">-</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <h3>Cara Menggunakan:</h3>
+            <ol>
+                <li><strong>Menggambar:</strong> Gambar huruf (A-Z) di canvas menggunakan mouse atau touchscreen</li>
+                <li><strong>Upload:</strong> Klik tombol "Upload Gambar" untuk memilih gambar tulisan tangan dari
+                    perangkat Anda</li>
+                <li>Klik tombol <strong>"Prediksi"</strong> untuk mendapatkan hasil</li>
+                <li>Klik tombol <strong>"Clear"</strong> untuk menghapus dan mencoba lagi</li>
+            </ol>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Powered by TensorFlow & Flask | CNN Model</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+
+</html>
